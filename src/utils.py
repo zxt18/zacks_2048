@@ -6,4 +6,3 @@ class Keys2048(StrEnum):
     RIGHT = "right"
     UP = "up"
     DOWN = "down"
-    

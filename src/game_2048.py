@@ -19,7 +19,7 @@ class Game2048:
         self.numbers_to_be_generated = numbers_to_be_generated
         self.max_score = max_score
         self._end_game = 0
-        
+
         if ai_engine:
             self.ai_engine = ai_engine
             LOG.info(f"AI Engine deployed : {self.ai_engine}")
@@ -40,10 +40,10 @@ class Game2048:
         Adds a random tile on the board, at '0' locations, from possible numbers_to_be_generated
         """
         empty_cells = [
-            (i,j)
+            (i, j)
             for i in range(self.grid_size)
             for j in range(self.grid_size)
-            if self.board[i][j] == 0    
+            if self.board[i][j] == 0
         ]
         if empty_cells:
             generated_coordinate = random.choice(empty_cells)
@@ -54,7 +54,7 @@ class Game2048:
     def start_game(self):
         self._end_game = 0
         self.board = [[0] * self.grid_size for _ in range(self.grid_size)]
-        
+
         num_of_2s = random.randint(1, self.grid_size**2)
         coordinates = [
             (i, j)
@@ -62,7 +62,7 @@ class Game2048:
             for j in range(self.grid_size)
         ]
         starting_twos = random.sample(coordinates, num_of_2s)
-        for x,y in starting_twos:  # coo stands for coordinate
+        for x, y in starting_twos:  # coo stands for coordinate
             self.board[x][y] = 2
 
     def is_game_win(self):
