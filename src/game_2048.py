@@ -32,7 +32,7 @@ class Game2048:
 
     def recommend_next_move(self) -> Keys2048:
         move = self.ai_engine.recommend_next_move(self.board)
-        LOG.info(f"AI Engine recommends {move}")
+        LOG.info(f"{self.ai_engine} recommends {move}")
         return move
 
     def generate_tile(self) -> None:

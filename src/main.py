@@ -2,9 +2,12 @@ import pygame
 from game_2048 import Game2048
 import logging  # type: ignore
 import logging.config
+import os
 from zack_ai_engine_2048 import ZackAIEngine
 
-logging.config.fileConfig("logging.conf")
+# Set up logging
+project_root = os.path.join(os.path.dirname(__file__),'..')
+logging.config.fileConfig(os.path.join(project_root,"logging.conf"))
 LOG = logging.getLogger(__name__)
 
 pygame.init()
@@ -13,8 +16,8 @@ WINDOW_HEIGHT, WINDOW_WIDTH = 1024, 768
 GRID_SIZE = 4
 TILE_SIZE = 100
 TILE_MARGIN = 10
-GRID_WIDTH = GRID_SIZE * (TILE_SIZE + TILE_MARGIN) - TILE_MARGIN
-GRID_OFFSET_X = (WINDOW_HEIGHT - GRID_WIDTH) // 2
+GRID_WIDTH = GRID_SIZE * (TILE_SIZE + TILE_MARGIN) - TILE_MARGIN # Total width of the grid
+GRID_OFFSET_X = (WINDOW_HEIGHT - GRID_WIDTH) // 2 # Horizontal offset to centre the grid
 GRID_OFFSET_Y = 100
 FONT_SIZE = 36
 SCORE_HEIGHT = 80
@@ -82,7 +85,7 @@ def draw_game_state(game: Game2048):
     if game.is_end_game():
         # Create a semi-transparent overlay
         overlay = pygame.Surface((GRID_WIDTH, GRID_WIDTH), pygame.SRCALPHA)
-        overlay.fill((0, 0, 0, 180))  # Semi-transparent black
+        overlay.fill((0, 0, 0, 180)) 
         screen.blit(overlay, (GRID_OFFSET_X, GRID_OFFSET_Y))
         
         if game.is_end_game() == 1:
@@ -92,7 +95,6 @@ def draw_game_state(game: Game2048):
             message = "Game Over!"
             text_color = (255, 0, 0)  # Red for game over
 
-        # Render the message
         game_state_font = pygame.font.Font(
             None, 60
         )  

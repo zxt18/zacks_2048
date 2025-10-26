@@ -4,7 +4,7 @@ from utils import Keys2048
 
 class AIEngine2048(ABC):
     """
-    Abstract Base Class for AI Engine's that could be injected into our
+    Abstract Base Class for AI Engine's that could be injected into our 2048 class
     """
 
     @abstractmethod
