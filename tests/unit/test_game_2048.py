@@ -60,6 +60,18 @@ def test_generate_tile_all_zero(game):
 
     assert non_zero_count == 1
 
+def test_generate_one_tile(game):
+    custom_board = [[2, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
+    game = game(custom_board)
+    game.generate_tile()
+    non_zero_count = 0
+    for row in game.board:
+        for cell in row:
+            if cell != 0:
+                non_zero_count += 1
+                assert cell in game.numbers_to_be_generated
+
+    assert non_zero_count == 2
 
 def test_generate_tile_full_board(game):
     full_board = [
