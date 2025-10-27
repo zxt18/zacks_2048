@@ -199,8 +199,29 @@ def test_move_down(game,input_board, expected_board, expected_move):
     changed = game_instance.move_down()
     assert changed == expected_move
     assert game_instance.board == expected_board
+
+is_game_win_cases = [
+    ([[2048,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], True),
+    ([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],False),
+    ([[1,2,3,4], [5,6,7,8], [9,10,11,12], [13,14,15,16]], False) 
+]
+
+@pytest.mark.parametrize("input_board,expected_win",is_game_win_cases)
+def test_is_game_win(game,input_board,expected_win):
+    game_instance = game(input_board)
+    ans = game_instance.is_game_win()
+    assert expected_win == ans
     
-    
-    
+is_game_over_cases = [
+    ([[2048,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]], False),
+    ([[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]],False),
+    ([[1,2,3,4], [5,6,7,8], [9,10,11,12], [13,14,15,16]], True) 
+]
+
+@pytest.mark.parametrize("input_board,expected_game_over",is_game_over_cases)
+def test_is_game_win(game,input_board,expected_game_over):
+    game_instance = game(input_board)
+    ans = game_instance.is_game_over()
+    assert expected_game_over == ans
 
     
