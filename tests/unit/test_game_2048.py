@@ -58,8 +58,147 @@ def test_is_game_win(game):
     board_2 = [[2048,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0]]
     game2 = game(board=board_2)
     assert game2.is_game_win() == True
-               
+    
 
+slide_row_left_cases = [
+    ([2, 2, 0, 0], [4, 0, 0, 0]),  
+    ([0, 0, 0, 0], [0, 0, 0, 0]),  
+    ([2, 0, 0, 2], [4, 0, 0, 0]),  
+    ([2, 2, 2, 2], [4, 4, 0, 0]),  
+    ([4, 0, 0, 0], [4, 0, 0, 0]),  
+    ([2, 4, 2, 4], [2, 4, 2, 4]),  
+    ([0, 2, 0, 4], [2, 4, 0, 0]),  
+    ([8, 8, 4, 4], [16, 8, 0, 0]), 
+]
+@pytest.mark.parametrize("input_row, expected", slide_row_left_cases)
+def test_slide_row_left(game, input_row, expected):
+    game = game()
+    assert game.slide_row_left(input_row) == expected
+
+
+move_left_cases = [
+    ([[2,2,0,0], [0,0,0,0], [2,0,0,2], [0,0,0,2]], 
+     [[4,0,0,0], [0,0,0,0], [4,0,0,0], [2,0,0,0]], 
+     True),
+    ([[2,0,2,0], [4,4,0,0], [0,0,0,0], [8,0,8,0]], 
+     [[4,0,0,0], [8,0,0,0], [0,0,0,0], [16,0,0,0]], 
+     True),
+    ([[2,2,2,2], [0,0,0,0], [4,4,4,4], [8,8,8,8]], 
+     [[4,4,0,0], [0,0,0,0], [8,8,0,0], [16,16,0,0]], 
+     True),
+    ([[0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0]], 
+     [[0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0]], 
+     False),
+    ([[2,4,8,16], [2,4,8,16], [2,4,8,16], [2,4,8,16]], 
+     [[2,4,8,16], [2,4,8,16], [2,4,8,16], [2,4,8,16]], 
+     False),
+]
+
+@pytest.mark.parametrize("input_board,expected_board,expected_move", move_left_cases)
+def test_move_left(game, input_board, expected_board, expected_move):
+    game_instance = game(input_board)
+    changed = game_instance.move_left()
+    assert changed == expected_move
+    assert game_instance.board == expected_board
+
+
+move_right_cases = [
+    ([[2,2,0,0], [0,0,0,0], [2,0,0,2], [0,0,0,2]], 
+     [[0,0,0,4], [0,0,0,0], [0,0,0,4], [0,0,0,2]], 
+     True),
+    ([[2,0,2,0], [4,4,0,0], [0,0,0,0], [8,0,8,0]], 
+     [[0,0,0,4], [0,0,0,8], [0,0,0,0], [0,0,0,16]], 
+     True),
+    ([[2,2,2,2], [0,0,0,0], [4,4,4,4], [8,8,8,8]], 
+     [[0,0,4,4], [0,0,0,0], [0,0,8,8], [0,0,16,16]], 
+     True),
+    ([[0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0]], 
+     [[0,0,0,0], [0,0,0,0], [0,0,0,0], [0,0,0,0]], 
+     False),
+    ([[2,4,8,16], [2,4,8,16], [2,4,8,16], [2,4,8,16]], 
+     [[2,4,8,16], [2,4,8,16], [2,4,8,16], [2,4,8,16]], 
+     False),
+]
+
+@pytest.mark.parametrize("input_board,expected_board,expected_move", move_right_cases)
+def test_move_right(game, input_board, expected_board, expected_move):
+    game_instance = game(input_board)
+    changed = game_instance.move_right()
+    assert changed == expected_move
+    assert game_instance.board == expected_board
+    
+move_up_cases = [
+    (
+        [[2, 0, 2, 0], [2, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+        [[4, 0, 2, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+        True
+    ),
+    (
+        [[2, 4, 0, 8], [2, 4, 0, 8], [0, 0, 0, 0], [0, 0, 0, 0]],
+        [[4, 8, 0, 16], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+        True
+    ),
+    (
+        [[2, 0, 4, 0], [0, 8, 0, 16], [0, 0, 0, 0], [0, 0, 0, 0]],
+        [[2, 8, 4, 16], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+        True
+    ),
+    (
+        [[2, 4, 8, 16], [2, 4, 8, 16], [0, 0, 0, 0], [0, 0, 0, 0]],
+        [[4, 8, 16, 32], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+        True
+    ),
+    (
+        [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+        [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+        False
+    ),
+
+]
+
+@pytest.mark.parametrize("input_board,expected_board,expected_move", move_up_cases)
+def test_move_up(game,input_board, expected_board, expected_move):
+    game_instance = game(input_board)
+    changed = game_instance.move_up()
+    assert changed == expected_move
+    assert game_instance.board == expected_board
+
+
+
+move_down_cases = [
+    (
+        [[0, 0, 0, 0], [0, 0, 0, 0], [2, 0, 0, 0], [2, 0, 2, 0]],
+        [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [4, 0, 2, 0]],
+        True
+    ),
+    (
+        [[0, 0, 0, 0], [0, 0, 0, 0], [2, 4, 0, 8], [2, 4, 0, 8]],
+        [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [4, 8, 0, 16]],
+        True
+    ),
+    (
+        [[0, 0, 0, 0], [0, 8, 0, 16], [2, 0, 4, 0], [0, 0, 0, 0]],
+        [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [2, 8, 4, 16]],
+        True
+    ),
+    (
+        [[0, 0, 0, 0], [0, 0, 0, 0], [2, 4, 8, 16], [2, 4, 8, 16]],
+        [[0, 0, 0, 0], [0, 0, 0, 0], [0,0,0,0], [4, 8, 16, 32]],
+        True,
+    ),
+    (
+        [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+        [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+        False
+    ),
+
+]
+@pytest.mark.parametrize("input_board,expected_board,expected_move", move_down_cases)
+def test_move_down(game,input_board, expected_board, expected_move):
+    game_instance = game(input_board)
+    changed = game_instance.move_down()
+    assert changed == expected_move
+    assert game_instance.board == expected_board
     
     
     
