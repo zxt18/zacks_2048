@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from utils import Keys2048
+from src.utils import Keys2048
 
 
 class AIEngine2048(ABC):

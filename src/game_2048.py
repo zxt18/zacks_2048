@@ -1,6 +1,6 @@
 import random
-from base_ai_engine_2048 import AIEngine2048
-from utils import Keys2048
+from src.base_ai_engine_2048 import AIEngine2048
+from src.utils import Keys2048
 import logging
 
 LOG = logging.getLogger(__name__)
@@ -10,12 +10,15 @@ class Game2048:
     def __init__(
         self,
         grid_size=4,
+        board=None,
         numbers_to_be_generated=(2, 4),
         max_score=2048,
         ai_engine: AIEngine2048 = None,
     ):
         self.grid_size = grid_size
-        self.board = [[0] * grid_size for _ in range(grid_size)]
+        self.board = (
+            board if board else [[0] * grid_size for _ in range(grid_size)]
+        )
         self.numbers_to_be_generated = numbers_to_be_generated
         self.max_score = max_score
         self._end_game = 0
@@ -61,6 +64,7 @@ class Game2048:
             for i in range(self.grid_size)
             for j in range(self.grid_size)
         ]
+
         starting_twos = random.sample(coordinates, num_of_2s)
         for x, y in starting_twos:  # coo stands for coordinate
             self.board[x][y] = 2
@@ -73,6 +77,8 @@ class Game2048:
         ):
             self._end_game = 1
             return True
+        else:
+            return False
 
     def is_game_over(self):
         for i in range(self.grid_size):
